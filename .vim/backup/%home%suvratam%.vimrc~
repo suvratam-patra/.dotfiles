@@ -1,0 +1,3 @@
+set backupdir=~/.vim/backup//
+set backup
+set backupcopy=yes
