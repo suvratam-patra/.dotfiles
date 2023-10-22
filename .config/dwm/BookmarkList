@@ -1,0 +1,12 @@
+#!/bin/sh
+
+bookmark="$(xclip -o)"
+file="$HOME/.local/share/bookmark"
+
+if grep -q "^$bookmark$" "$file"; then
+    notify-send "Opps! Already Bookmarked"
+else
+    notify-send "Bookmark added!" "$bookmark is now save to the file."
+    echo "$bookmark" >> "$file"
+fi
+
