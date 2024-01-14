@@ -22,7 +22,7 @@ run "numlockx on"
 #run "volumeicon"
 #run "dex $HOME/.config/autostart/*.desktop"
 run "$HOME/.config/slstatus/slstatus"
-run "dunst -conf ~/.config/dunst/dunstrc"
+dunst -conf ~/.config/dunst/dunstrc &
 # run "blueberry-tray"
 # run "/usr/bin/notify-send"
 # run "/usr/lib/xfce4/notifyd/xfce4-notifyd"
