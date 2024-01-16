@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/suvratam/.config/slstatus'
+let g:netrw_dirhist_8='/home/suvratam/.config/dwm'
+let g:netrw_dirhist_7='/home/suvratam/.config/slstatus'
+let g:netrw_dirhist_6='/home/suvratam/.config/dwm'
+let g:netrw_dirhist_5='/home/suvratam/.dotfiles/.config/dwm'
+let g:netrw_dirhist_4='/home/suvratam/.config/slstatus'
+let g:netrw_dirhist_3='/home/suvratam/.config'
+let g:netrw_dirhist_2='/home/suvratam/.config/slstatus'
+let g:netrw_dirhist_1='/home/suvratam/.config/dwm'
