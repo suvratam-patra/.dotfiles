@@ -1,0 +1,93 @@
+#!/bin/sh
+
+URed='\033[1;91m'
+Red='\033[4;31m'
+gray='\033[1;30m'
+
+DATE=$(date +" ${Red}%a  ${gray}%d %b %G")
+#DATE=$(date "+%r")
+pmd=${URed}${DATE}
+echo -e $pmd
+
+#youtube-dl
+alias yta-aac="youtube-dl --extract-audio --audio-format aac "
+alias yta-best="youtube-dl --extract-audio --audio-format best "
+alias yta-flac="youtube-dl --extract-audio --audio-format flac "
+alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
+alias yta-mp3="youtube-dl --extract-audio --audio-format mp3 "
+alias yta-opus="youtube-dl --extract-audio --audio-format opus "
+alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
+alias yta-wav="youtube-dl --extract-audio --audio-format wav "
+
+alias ytv-best="youtube-dl -f bestvideo+bestaudio "
+
+#get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+#gpg
+#verify signature for isos
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+#receive the key of a developer
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+
+#systeminfo
+alias probe="sudo -E hw-probe -all -upload"
+
+#shutdown or reboot
+alias ssn="sudo shutdown now"
+alias sr="sudo reboot"
+
+#auto-completion case-insensitive
+set completion-ignore-case on
+
+#----------------------------------
+#All bash aliases
+
+#list
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='ls -la'
+alias l.="ls -A | egrep '^\.'"
+
+#fix obvious typo's
+alias cd..='cd ..'
+alias pdw="pwd"
+## Colorize the grep command output for ease of use (good for log files)##
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+#readable output
+alias df='df -h'
+
+#free
+alias free="free -mt"
+
+
+#continue download
+alias wget="wget -c"
+
+#userlist
+alias userlist="cut -d: -f1 /etc/passwd"
+
+#ps
+alias psa="ps auxf"
+alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+#grub update
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+
+#switch between bash and zsh
+alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
+alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
+
+#hardware info --short
+alias hw="hwinfo --short"
+
+
+# git config for dotfiles
+alias dgc='/usr/bin/git --git-dir=$HOME/.local/.dotfiles --work-tree=$HOME'
+
+# remove lock dbase;Free package manager
+alias pm-unlock='sudo rm -rf /var/{lib/dpkg/{lock-frontend,lock},cache/apt/archives/lock}'
+
