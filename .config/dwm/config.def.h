@@ -3,18 +3,25 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const char panel[][20]       = { "xfce4-panel", "Xfce4-panel" }; /* name & cls of panel win */
 static const unsigned int gappx     = 3;        /* gaps between windows */
 static const unsigned int systraypinning = 1;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayonleft =  0;
 static const unsigned int systrayspacing = 3;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const int showsystray        = 0;     /* 0 means no systray */
+static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 1;  
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const char buttonbar[]       = " ";
+static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 static const Bool viewontag         = True;     /* Switch view on tag switch */
 
 static const char *fonts[]          = {
@@ -49,9 +56,8 @@ static const unsigned int alphas[][3]      = {
 /* tagging */
 //static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 /* static const char *tags[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }; */
-static const char *tags[] = { " ", " ", " ", " ", " ", " ", " ", " ", " " , " "}; 
+static const char *tags[] = {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "};
 /* static const char *tags[] = { "Web", "Chat", "Edit", "Meld", "Vb", "Mail", "Video", "Image", "Files" }; */
-
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -60,11 +66,13 @@ static const Rule rules[] = {
 	 *  use tags mask to point an application to a specific workspace
 	 */
 	/* class                       instance    title      tags mask      isfloating   monitor */
-	{ "Gimp",                      NULL,       NULL,       0,            0,           -1 },
-	{ "Xfce4-terminal",            NULL,       NULL,       0,            1,           -1 },
+	{ panel[1],                    NULL,       NULL,       (1 << 9) - 1, 1,           -1 },
+    { "Gimp",                      NULL,       NULL,       0,            0,           -1 },
+	{ "Blueman-manager",           NULL,       NULL,       0,            1,           -1 },
+	{ "Pavucontrol",               NULL,       NULL,       0,            1,           -1 },
 	{ "firefox",                   NULL,       NULL,       0,            0,           -1 },
-	{ "Arcolinux-welcome-app.py",  NULL,       NULL,       0,            1,           -1 },
-	{ "Arcolinux-calamares-tool.py",  NULL,       NULL,       0,            1,           -1 },	
+	{ "VirtualBox Machine",        NULL,       NULL,       0,            1,           -1 },
+	{ "Ld-linux-x86-64.so.2",      NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -91,18 +99,17 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-	{ "[@]",      spiral },
-	{ "[\\]",     dwindle },
-	{ "H[]",      deck },
-	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
-	{ "HHH",      grid },
-	{ "###",      nrowgrid },
-	{ "---",      horizgrid },
-	{ ":::",      gaplessgrid },
-	{ "|M|",      centeredmaster },
+	//{ "[@]",      spiral },
+	//{ "[\\]",     dwindle },
+	//{ "H[]",      deck },
+	//{ "TTT",      bstack },
+	//{ "===",      bstackhoriz },
+	//{ "HHH",      grid },
+	//{ "###",      nrowgrid },
+	//{ "---",      horizgrid },
+	//{ ":::",      gaplessgrid },
+	//{ "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ NULL,       NULL },
 };
 
@@ -121,13 +128,16 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]    = { "dmenu_run", "-g", "10", "-l", "48", "-p", "Run: ", NULL };
-static const char *filecmd[]    = { "nautilus", NULL };
+static const char *filecmd[]     = { "pcmanfm", NULL };
+static const char *launcher[]     = { "$HOME/.config/dwm/launcher/launcher.sh", NULL };
 /* the st terminal with tabbed */
 static const char *termcmd[]     = { "alacritty", NULL };
-
+static const char *taskmanager[]  = { "gnome-system-monitor", NULL };
+static const char *calendar[]  = { "gsimplecal", NULL };
 //static const char *bookmark[]    = { "/home/suvratam/.config/dwm/BookmarkList", NULL };
-static const char *inc_bright[]    = { "/home/suvratam/.config/dwm/bright", "+", NULL };
-static const char *drec_bright[]    = { "/home/suvratam/.config/dwm/bright", "-", NULL };
+static const char *inc_bright[]    = { "/home/suvratam/.config/dwm/scripts/bright", "+", NULL };
+static const char *drec_bright[]    = { "/home/suvratam/.config/dwm/scripts/bright", "-", NULL };
+static const char *screenshot[]    = { "/home/suvratam/.config/dwm/scripts/scroti.sh", NULL};
 
 #include "selfrestart.c"
 #include "shiftview.c"
@@ -137,7 +147,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = filecmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+    { 0,                            XK_Print,  spawn,          {.v = screenshot } },
+    { MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
     { MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
@@ -196,8 +207,8 @@ static Key keys[] = {
 	{ MODKEY,		        		XK_Tab,    shiftview,	   {.i =  1 } },
 	{ MODKEY|ShiftMask,		        XK_Tab,	   shiftview,	   {.i = -1 } },
     { MODKEY,                       XK_h,      spawn,          SHCMD("xdotool type $(grep -v '^#' /home/suvratam/.local/share/bookmark | dmenu -i -l 50 | cut -d' ' -f1)") },
-    { ControlMask,                  XK_F3,     spawn,          {.v = inc_bright  } },
-    { ControlMask,                  XK_F2,     spawn,          {.v = drec_bright } },
+    { 0,                            XK_F3,     spawn,          {.v = inc_bright  } },
+    { 0,                            XK_F2,     spawn,          {.v = drec_bright } },
 
 
 	TAGKEYS(                        XK_1,                      0)
@@ -212,13 +223,13 @@ static Key keys[] = {
     
     /* Switch to specific layouts */
     { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
 	
     { MODKEY|ShiftMask,             XK_q,	  quit,		      {0} },
-    //{ MODKEY|ShiftMask,             XK_r,     quit,           {1} },
-    { MODKEY|ShiftMask,             XK_r,    self_restart,   {0} },
+    { 0,                            XK_F1,     quit,           {1} },
+    { MODKEY|ShiftMask,             XK_r,    self_restart,    {0} },
 };
 
 /* IF YOU HAVE A AZERTY KEYBOARD USE THESE CODES
@@ -249,12 +260,14 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button1,        spawn,          {.v = taskmanager } },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = filecmd } },
-	{ ClkStatusText,        0,              Button3,        spawn,          {.v = calendar } },
+    { ClkButton,		    0,  		    Button1,        spawn,  		{.v = launcher } },
+    { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+    { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+    //{ ClkTagBar,              0,              Button1,        tag,          {0} },
+	//{ ClkTagBar,              0,              Button3,        toggletag,    {0} },
+    { ClkStatusText,        0,              Button1,        spawn,          {.v = taskmanager } },
+    { ClkStatusText,        0,              Button2,        spawn,          {.v = filecmd } },
+    { ClkStatusText,        0,              Button3,        spawn,          {.v = calendar } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },

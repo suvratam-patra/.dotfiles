@@ -28,7 +28,7 @@ super + F5
 
 #sxhkd
 super + F6
-    alacritty -e vim /home/suvratam/.config/dwm/sxhkd/sxhkdrc 
+   gnome-terminal -- vim "/home/suvratam/.config/dwm/sxhkd/sxhkdrc" 
 
 #Virtualbox
 super + F7
@@ -112,8 +112,8 @@ super + Escape
 #################################################################
 
 #File-Manager
-#super + shift + Return
-#	thunar
+super + shift + e
+	pcmanfm
 
 #Keyboard dependent
 #File-Manager
@@ -126,7 +126,7 @@ super + shift + d
 
 #reload sxhkd:
 super + shift + s
-    pkill -usr1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config'
+    pkill -usr1 -x sxhkd; notify-send 'Reloaded config' --app-name=Sxhkd
 
 #blueberry
 super + shift + b
@@ -225,36 +225,36 @@ ctrl + alt + a
 #################################################################
 
 #Wallpaper trash
-alt + t
-    variety -t
+#alt + t
+    #variety -t
 
 #Wallpaper next
-alt + n
-    variety -n
+#alt + n
+    #variety -n
 
 #Wallpaper previous
-alt + p
-    variety -p
+#alt + p
+    #variety -p
 
 #Wallpaper favorite
-alt + f
-    variety -f
+#alt + f
+    #variety -f
 
 #Wallpaper previous
-alt + Left
-    variety -p
+#alt + Left
+    #variety -p
 
 #Wallpaper next
-alt + Right
-    variety -n
+#alt + Right
+    #variety -n
 
 #Wallpaper toggle-pause
-alt + Up
-    variety --toggle-pause
+#alt + Up
+    #variety --toggle-pause
 
 #Wallpaper resume
-alt + Down
-    variety --resume
+#alt + Down
+    #variety --resume
 
 #Gmrun
 alt + F2
@@ -303,16 +303,22 @@ ctrl + shift + Escape
 #################################################################
 
 #Scrot
-Print
-    scrot 'UbuntuLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'
+super + a
+    scrot -s -d 1 ~/Pictures/$(date +%a_%F)_scrot.png -c
+
+super + s 
+    scrot -u -d 3 -e 'mv $f $$(xdg-user-dir PICTURES)' -c
 
 #screeenshooter
 ctrl + Print
-     xfce4-screenshooter
+    xfce4-screenshooter
 
 #Gnome-Screenshot
-ctrl + shift + Print
-     gnome-screenshot -i
+#Print
+    #gnome-screenshot
+
+#super + p 
+    #gnome-screenshot -a
 
 
 #################################################################
@@ -327,18 +333,28 @@ F12
 #################################################################
 #     MULTIMEDIA KEYS
 #################################################################
-
 #Raises volume
 XF86AudioRaiseVolume
-    amixer -D pulse sset Master 5%+
-
+    ~/.config/dwm/scripts/sound.sh
 #Lowers volume
 XF86AudioLowerVolume
-    amixer -D pulse sset Master 5%-
+    pactl set-sink-volume @DEFAULT_SINK@ -15%
 
 #Mute
 XF86AudioMute
-    amixer -D pulse sset Master 1+ toggle
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+#Raises volume
+#XF86AudioRaiseVolume
+    #amixer -D pulse sset Master 5%+
+
+#Lowers volume
+#XF86AudioLowerVolume
+    #amixer -D pulse sset Master 5%-
+
+#Mute
+#XF86AudioMute
+    #amixer -D pulse sset Master 1+ toggle
 
 #Playerctl works for Pragha, Spotify and others
 #Delete the line for playerctl if you want to use mpc

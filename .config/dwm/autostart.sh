@@ -6,24 +6,25 @@ function run {
   fi
 }
 
-#slstatus &
+slstatus &
+#dwmblocks &
 #export LANG=en_US.utf-8
-xset -dpms &
-xset s off &
+#xset -dpms &
+#xset s off &
 
-run "nm-applet 2>&1 > /dev/null"
-run "pasystray"
+run "nm-applet"
+#run "pasystray"
 run "blueman-applet"
 run "barrier"
+run "flameshot"
 run "numlockx on"
 # run "pamac-tray"
-# run "flameshot"
 # run "variety"
 # run "pulseaudio"
 # run "pamac-tray"
 #run "volumeicon"
 #run "dex $HOME/.config/autostart/*.desktop"
-run "$HOME/.config/slstatus/slstatus"
+#run "$HOME/.config/slstatus/slstatus"
 #dunst -conf ~/.config/dunst/dunstrc &
 # run "blueberry-tray"
 # run "/usr/bin/notify-send"
@@ -32,6 +33,8 @@ run "$HOME/.config/slstatus/slstatus"
 sxhkd -c ~/.config/dwm/sxhkd/sxhkdrc &
 picom --experimental-backends -b --config ~/.config/dwm/picom.conf &
 feh --randomize --bg-fill ~/.config/dwm/Wallpaper/* &
+sleep 0.3
+xfce4-panel --disable-wm-check
 # xargs xwallpaper --stretch < ~/.config/dwm/Wallpaper &
 # eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg) &
 
